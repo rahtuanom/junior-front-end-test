@@ -8,12 +8,13 @@ import { TourGuide } from '@/components/ui/TourGuide';
 
 export const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [mobileTab, setMobileTab] = useState<'katalog' | 'keranjang' | 'pesanan'>('katalog');
+  const [activeTab, setActiveTab] = useState<'katalog' | 'keranjang' | 'pesanan'>('katalog');
   const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
   const [isResettingSession, setIsResettingSession] = useState(false);
   const [resetSignal, setResetSignal] = useState(0);
   const [isTourOpen, setIsTourOpen] = useState(false);
   const [startSimulationSignal, setStartSimulationSignal] = useState(0);
+  const [cartItemCount, setCartItemCount] = useState(3);
 
   const handleResetSession = () => {
     setIsResettingSession(true);
@@ -24,16 +25,30 @@ export const App: React.FC = () => {
   };
 
   const handleOpenMobileCart = () => {
-    setMobileTab('keranjang');
+    setActiveTab('keranjang');
     setIsMobileCartOpen(true);
   };
 
   const handleGoToKatalog = () => {
-    setMobileTab('katalog');
+    setActiveTab('katalog');
     setIsMobileCartOpen(false);
   };
 
+  const handleGoToPesanan = () => {
+    setActiveTab('pesanan');
+    setIsMobileCartOpen(false);
+  };
+
+  const handleSidebarTabSelect = (tab: string) => {
+    if (tab === 'Pesanan') {
+      handleGoToPesanan();
+    } else {
+      handleGoToKatalog();
+    }
+  };
+
   const handleStartSimulation = () => {
+    handleGoToKatalog();
     setStartSimulationSignal((prev) => prev + 1);
   };
 
@@ -43,7 +58,7 @@ export const App: React.FC = () => {
       <Header
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        cartItemCount={3}
+        cartItemCount={cartItemCount}
         onOpenCartMobile={handleOpenMobileCart}
         onResetSession={handleResetSession}
         isResettingSession={isResettingSession}
@@ -53,7 +68,8 @@ export const App: React.FC = () => {
       <div className="flex-1 flex w-full overflow-hidden">
         {/* Desktop Fixed Left Sidebar Navigation (No Scroll) */}
         <Sidebar
-          activeTab="Katalog"
+          activeTab={activeTab === 'pesanan' ? 'Pesanan' : 'Katalog'}
+          onTabSelect={handleSidebarTabSelect}
           onOpenHelp={() => setIsTourOpen(true)}
         />
 
@@ -66,16 +82,20 @@ export const App: React.FC = () => {
             onOpenMobileCart={handleOpenMobileCart}
             resetSignal={resetSignal}
             startSimulationSignal={startSimulationSignal}
+            onCartCountChange={setCartItemCount}
+            activeView={activeTab === 'pesanan' ? 'pesanan' : 'katalog'}
+            onGoToKatalog={handleGoToKatalog}
           />
         </PageContainer>
       </div>
 
       {/* Mobile Bottom Navigation Bar */}
       <BottomNav
-        cartItemCount={3}
-        activeTab={mobileTab}
+        cartItemCount={cartItemCount}
+        activeTab={activeTab}
         onOpenCartMobile={handleOpenMobileCart}
         onGoToKatalog={handleGoToKatalog}
+        onGoToPesanan={handleGoToPesanan}
       />
 
       {/* Interactive Tour Guide Modal */}

@@ -6,13 +6,15 @@ export interface BottomNavProps {
   activeTab: 'katalog' | 'keranjang' | 'pesanan';
   onOpenCartMobile: () => void;
   onGoToKatalog: () => void;
+  onGoToPesanan?: () => void;
 }
 
 export const BottomNav: React.FC<BottomNavProps> = ({
   cartItemCount,
   activeTab,
   onOpenCartMobile,
-  onGoToKatalog
+  onGoToKatalog,
+  onGoToPesanan
 }) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#C5C5D3] px-6 py-2 flex items-center justify-around lg:hidden shadow-lg select-none">
@@ -47,10 +49,10 @@ export const BottomNav: React.FC<BottomNavProps> = ({
         <span className="text-[11px]">Keranjang</span>
       </button>
 
-      {/* Pesanan Button */}
+      {/* Pesanan Button -> Navigates to Order History */}
       <button
         type="button"
-        onClick={onGoToKatalog}
+        onClick={onGoToPesanan || onGoToKatalog}
         className={`flex flex-col items-center gap-1 p-1 transition-colors ${
           activeTab === 'pesanan' ? 'text-[#A1315E] font-bold' : 'text-[#757682] font-medium'
         }`}

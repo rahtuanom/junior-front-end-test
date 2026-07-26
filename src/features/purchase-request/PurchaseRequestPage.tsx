@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ShoppingBag } from 'lucide-react';
-import { Product, CartItem as CartItemType, StepType, PaymentMethodId, ToastMessage } from '@/types';
+import { Product, CartItem as CartItemType, StepType, PaymentMethodId, ToastMessage, OrderHistoryItem } from '@/types';
 import { INITIAL_MOCK_PRODUCTS } from './data/mockProducts';
 import { PAYMENT_METHODS } from './data/paymentMethods';
-import { SHIPPING_METHODS, ShippingOption } from './data/shippingMethods';
+import { SHIPPING_METHODS } from './data/shippingMethods';
 import { Stepper } from './components/Stepper';
 import { ProductCatalog } from './components/ProductCatalog';
 import { CartPanel } from './components/CartPanel';
@@ -11,11 +11,13 @@ import { PaymentMethod } from './components/PaymentMethod';
 import { ShippingMethod } from './components/ShippingMethod';
 import { OrderSummary } from './components/OrderSummary';
 import { SuccessReceipt } from './components/SuccessReceipt';
+import { OrderHistoryView } from './components/OrderHistoryView';
 import { Toast } from '@/components/ui/Toast';
 import { Button } from '@/components/ui/Button';
 
 const STOCKS_STORAGE_KEY = 'ANEMONE_PRODUCT_STOCKS_V2';
 const CART_STORAGE_KEY = 'ANEMONE_CART_ITEMS_V2';
+const HISTORY_STORAGE_KEY = 'ANEMONE_ORDER_HISTORY_V2';
 
 export interface PurchaseRequestPageProps {
   searchQuery: string;
@@ -24,6 +26,9 @@ export interface PurchaseRequestPageProps {
   onOpenMobileCart?: () => void;
   resetSignal?: number;
   startSimulationSignal?: number;
+  onCartCountChange?: (count: number) => void;
+  activeView?: 'katalog' | 'pesanan';
+  onGoToKatalog?: () => void;
 }
 
 export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
@@ -32,7 +37,10 @@ export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
   onCloseMobileCart,
   onOpenMobileCart,
   resetSignal,
-  startSimulationSignal
+  startSimulationSignal,
+  onCartCountChange,
+  activeView = 'katalog',
+  onGoToKatalog
 }) => {
   // Initialize Products with localStorage persistence
   const [products, setProducts] = useState<Product[]>(() => {
@@ -73,6 +81,19 @@ export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
     ];
   });
 
+  // Initialize Order History with localStorage persistence
+  const [orderHistory, setOrderHistory] = useState<OrderHistoryItem[]>(() => {
+    try {
+      const savedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
+      if (savedHistory) {
+        return JSON.parse(savedHistory);
+      }
+    } catch {
+      // Fallback
+    }
+    return [];
+  });
+
   const [currentStep, setCurrentStep] = useState<StepType>(1);
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethodId>('qris');
   const [selectedShipping, setSelectedShipping] = useState<string>('internal');
@@ -87,6 +108,14 @@ export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
   const isMobileCartOpen = externalIsMobileCartOpen !== undefined ? externalIsMobileCartOpen : internalIsMobileCartOpen;
   const handleCloseMobileCart = onCloseMobileCart || (() => setInternalIsMobileCartOpen(false));
   const handleOpenMobileCartView = onOpenMobileCart || (() => setInternalIsMobileCartOpen(true));
+
+  // Dynamically update total cart item count to parent Header & BottomNav
+  useEffect(() => {
+    const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+    if (onCartCountChange) {
+      onCartCountChange(totalCount);
+    }
+  }, [cart, onCartCountChange]);
 
   // Sync products stock to localStorage
   useEffect(() => {
@@ -114,13 +143,24 @@ export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
     }
   }, [cart]);
 
+  // Sync order history to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(orderHistory));
+    } catch {
+      // Ignore
+    }
+  }, [orderHistory]);
+
   // Handle Dev Reset Sesi Signal
   useEffect(() => {
     if (resetSignal && resetSignal > 0) {
       localStorage.removeItem(STOCKS_STORAGE_KEY);
       localStorage.removeItem(CART_STORAGE_KEY);
+      localStorage.removeItem(HISTORY_STORAGE_KEY);
       setProducts(INITIAL_MOCK_PRODUCTS);
       setCart([]);
+      setOrderHistory([]);
       setCurrentStep(1);
       setIsSuccessModalOpen(false);
     }
@@ -129,18 +169,18 @@ export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
   // Handle Start Simulation Signal
   useEffect(() => {
     if (startSimulationSignal && startSimulationSignal > 0) {
-      // Find Kotak Pensil Pink (prod-6)
       const kotakPensil = products.find((p) => p.id === 'prod-6') || INITIAL_MOCK_PRODUCTS[5];
       setCart([{ product: kotakPensil, quantity: 5 }]);
       setCurrentStep(1);
       showToast('info', 'Simulasi Dimulai: 5 Kotak Pensil Pink telah ditambahkan ke keranjang!');
     }
-  }, [startSimulationSignal]);
+  }, [startSimulationSignal, products]);
 
   // Cart Subtotal Calculation
   const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
   const selectedShippingObj = SHIPPING_METHODS.find((s) => s.id === selectedShipping) || SHIPPING_METHODS[0];
+  const selectedPaymentObj = PAYMENT_METHODS.find((m) => m.id === selectedPayment) || PAYMENT_METHODS[0];
   const shippingCost = selectedShippingObj.price;
 
   const triggerCalculationDebounce = () => {
@@ -237,7 +277,7 @@ export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
       setTimeout(() => {
         setIsLoading(false);
         
-        // Deduct purchased quantities from product stocks & update localStorage!
+        // Deduct purchased quantities from product stocks!
         setProducts((prevProducts) =>
           prevProducts.map((p) => {
             const cartItem = cart.find((item) => item.product.id === p.id);
@@ -250,6 +290,29 @@ export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
         );
 
         const randomRef = 'REQ-ANM-' + Math.floor(100000 + Math.random() * 900000);
+        const taxAmt = Math.round(subtotal * 0.11);
+        const finalTotal = subtotal + taxAmt + selectedShippingObj.price;
+
+        const newOrder: OrderHistoryItem = {
+          id: Date.now().toString(),
+          orderNumber: randomRef,
+          createdAt: new Date().toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          }),
+          cart: [...cart],
+          subtotal,
+          taxAmount: taxAmt,
+          shippingOption: selectedShippingObj,
+          paymentMethod: selectedPaymentObj,
+          totalAmount: finalTotal,
+          status: 'Diproses HO'
+        };
+
+        setOrderHistory((prev) => [newOrder, ...prev]);
         setOrderNumber(randomRef);
         setCurrentStep(3);
         setIsSuccessModalOpen(true);
@@ -264,7 +327,18 @@ export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
     showToast('success', 'Siap membuat permintaan cabang baru!');
   };
 
-  const selectedPaymentObj = PAYMENT_METHODS.find((m) => m.id === selectedPayment) || PAYMENT_METHODS[0];
+  // If user navigated to "Pesanan" tab (Order History View)
+  if (activeView === 'pesanan') {
+    return (
+      <div className="flex-1 flex flex-col min-w-0 bg-[#F8F9FF] h-full overflow-hidden">
+        <Toast toast={toast} onClose={() => setToast(null)} />
+        <OrderHistoryView
+          history={orderHistory}
+          onGoToKatalog={onGoToKatalog || handleGoToStep1}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 flex flex-col min-w-0 bg-[#F8F9FF] h-full overflow-hidden">

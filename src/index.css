@@ -92,3 +92,24 @@
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* Hide number input spinners for clean typing */
+.hide-spinner::-webkit-inner-spin-button,
+.hide-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.hide-spinner {
+  -moz-appearance: textfield;
+}
+
+/* Media Print Rules for Clean PDF Export */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
+}

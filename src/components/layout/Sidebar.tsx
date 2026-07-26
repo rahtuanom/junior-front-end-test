@@ -22,10 +22,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onOpenHelp
 }) => {
   const mainLinks = [
-    { name: 'Katalog', icon: Grid, active: true },
-    { name: 'Pesanan', icon: ClipboardList, active: false },
-    { name: 'Inventaris', icon: PackageCheck, active: false },
-    { name: 'Laporan', icon: BarChart3, active: false },
+    { name: 'Katalog', icon: Grid },
+    { name: 'Pesanan', icon: ClipboardList },
+    { name: 'Inventaris', icon: PackageCheck },
+    { name: 'Laporan', icon: BarChart3 },
   ];
 
   return (
@@ -45,6 +45,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           <button 
             type="button"
+            onClick={() => onTabSelect && onTabSelect('Katalog')}
             className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-[#A1315E] hover:bg-[#89274E] text-white rounded-lg text-sm font-semibold transition-all shadow-xs"
           >
             <Plus className="w-4 h-4" />
@@ -56,10 +57,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <nav className="space-y-1 pt-2">
           {mainLinks.map((item) => {
             const Icon = item.icon;
-            const isSelected = activeTab === item.name || item.active;
+            const isSelected = activeTab === item.name;
             return (
               <button
                 key={item.name}
+                type="button"
                 onClick={() => onTabSelect && onTabSelect(item.name)}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                   isSelected

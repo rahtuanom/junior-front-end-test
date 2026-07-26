@@ -3,6 +3,8 @@
  * Mengatur seluruh definisi tipe data katalog, keranjang, pembayaran, dan notifikasi.
  */
 
+import { ShippingOption } from '@/features/purchase-request/data/shippingMethods';
+
 // Kategori produk yang tersedia di katalog
 export type CategoryType = 'Semua' | 'Buku' | 'Tas' | 'Alat Tulis' | 'Aksesoris' | 'Seragam';
 
@@ -33,6 +35,20 @@ export interface PaymentMethodOption {
   description: string;
   iconName: string;
   details: string;
+}
+
+// Tipe data histori pesanan yang telah diselesaikan pada sesi ini
+export interface OrderHistoryItem {
+  id: string;
+  orderNumber: string;
+  createdAt: string;
+  cart: CartItem[];
+  subtotal: number;
+  taxAmount: number;
+  shippingOption: ShippingOption;
+  paymentMethod: PaymentMethodOption;
+  totalAmount: number;
+  status: 'Selesai' | 'Diproses HO';
 }
 
 // Tipe langkah dalam alur pemesanan (1: Katalog, 2: Pembayaran, 3: Konfirmasi Struk)

@@ -48,20 +48,20 @@ export const SuccessReceipt: React.FC<SuccessReceiptProps> = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="md" closeOnBackdropClick={false}>
-      <div className="text-center space-y-4">
-        {/* Success Icon */}
-        <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-inner animate-modal-pop">
-          <CheckCircle className="w-10 h-10" />
+      <div className="text-center space-y-4 max-h-[85vh] overflow-y-auto pr-1">
+        {/* Success Icon (Hidden on Print) */}
+        <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-inner animate-modal-pop shrink-0 print:hidden">
+          <CheckCircle className="w-9 h-9" />
         </div>
 
         <div>
-          <h2 className="text-xl font-black text-slate-900">Permintaan Berhasil Terkirim!</h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <h2 className="text-lg sm:text-xl font-black text-slate-900">Permintaan Berhasil Terkirim!</h2>
+          <p className="text-xs text-slate-500 mt-0.5 print:hidden">
             Pesanan operasional cabang telah diteruskan ke Head Office Anemone.
           </p>
         </div>
 
-        {/* Receipt Box */}
+        {/* Flexible Unclipped Receipt Box */}
         <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-left space-y-3 font-mono text-xs text-slate-700">
           <div className="flex justify-between pb-2 border-b border-dashed border-slate-300 font-sans">
             <div>
@@ -70,21 +70,23 @@ export const SuccessReceipt: React.FC<SuccessReceiptProps> = ({
             </div>
             <div className="text-right">
               <p className="text-[10px] text-slate-400 font-semibold uppercase">Tanggal</p>
-              <p className="text-slate-600">{currentDate}</p>
+              <p className="text-slate-600 text-[11px]">{currentDate}</p>
             </div>
           </div>
 
-          {/* Items Summary Table */}
-          <div className="space-y-1.5 py-1 max-h-36 overflow-y-auto pr-1">
+          {/* Fully Flexible Unclipped Items Table */}
+          <div className="space-y-1.5 py-1">
             <p className="font-bold font-sans text-slate-800 text-[11px] uppercase tracking-wider mb-2">
-              Rincian Item Pesanan ({cart.length})
+              Rincian Item Pesanan ({cart.length} Barang)
             </p>
             {cart.map((item) => (
-              <div key={item.product.id} className="flex justify-between items-center text-xs py-0.5">
-                <span className="truncate max-w-[200px]">
-                  {item.product.name} &times; {item.quantity}
+              <div key={item.product.id} className="flex justify-between items-center text-xs py-1 border-b border-slate-100 last:border-0">
+                <span className="font-medium text-slate-800">
+                  {item.product.name} &times; {item.quantity} {item.product.unit || 'pcs'}
                 </span>
-                <span className="font-medium">{formatRupiah(item.product.price * item.quantity)}</span>
+                <span className="font-semibold text-slate-900 shrink-0 pl-2">
+                  {formatRupiah(item.product.price * item.quantity)}
+                </span>
               </div>
             ))}
           </div>
@@ -106,15 +108,15 @@ export const SuccessReceipt: React.FC<SuccessReceiptProps> = ({
               <span>Metode Pembayaran</span>
               <span className="font-semibold text-[#A1315E]">{paymentMethod.name}</span>
             </div>
-            <div className="flex justify-between text-sm font-extrabold text-slate-900 pt-2 border-t border-slate-200">
+            <div className="flex justify-between text-sm sm:text-base font-extrabold text-slate-900 pt-2 border-t border-slate-200">
               <span>Total Biaya</span>
               <span className="text-[#A1315E]">{formatRupiah(totalAmount)}</span>
             </div>
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-2 pt-2">
+        {/* Action Buttons (Strictly Hidden on Printed Document/PDF) */}
+        <div className="flex flex-col sm:flex-row gap-2 pt-2 print:hidden">
           <Button
             variant="outline"
             size="md"

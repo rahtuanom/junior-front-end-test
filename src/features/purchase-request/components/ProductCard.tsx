@@ -38,6 +38,25 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawVal = e.target.value;
+    if (rawVal === '') {
+      onUpdateCart(product, 0);
+      return;
+    }
+    const val = parseInt(rawVal, 10);
+    if (isNaN(val) || val < 0) {
+      onUpdateCart(product, 0);
+      return;
+    }
+    if (val > product.stock) {
+      onUpdateCart(product, product.stock);
+      onExceedStock(product.name, product.stock);
+      return;
+    }
+    onUpdateCart(product, val);
+  };
+
   const handleRemove = () => {
     onUpdateCart(product, 0);
   };
@@ -101,25 +120,33 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Action Controls Row */}
         <div className="pt-2 border-t border-[#C5C5D3] flex items-center justify-between gap-1.5">
-          {/* Quantity Counter Box */}
+          {/* Editable Quantity Counter Input Box */}
           <div className="flex items-center bg-white border border-[#C5C5D3] rounded-md h-7 sm:h-8 overflow-hidden">
             <button
               type="button"
               onClick={handleDecrement}
               disabled={isOutOfStock || quantityInCart <= 0}
-              className="w-6 sm:w-7 h-full flex items-center justify-center text-[#444651] hover:bg-slate-100 disabled:opacity-40 font-medium transition-colors text-xs"
+              className="w-6 sm:w-7 h-full flex items-center justify-center text-[#444651] hover:bg-slate-100 disabled:opacity-40 font-medium transition-colors text-xs shrink-0 select-none"
             >
               -
             </button>
-            <span className="w-6 sm:w-7 text-center text-xs font-bold text-[#0D1C2F]">
-              {quantityInCart}
-            </span>
-            <div onClick={handleWrapperPlusClick} className="h-full flex items-center cursor-pointer">
+            <input
+              type="number"
+              min={0}
+              max={product.stock}
+              value={quantityInCart === 0 ? '' : quantityInCart}
+              onChange={handleInputChange}
+              disabled={isOutOfStock}
+              placeholder="0"
+              className="w-8 sm:w-10 text-center text-xs font-bold text-[#0D1C2F] bg-transparent outline-none p-0 border-0 focus:ring-0 appearance-none hide-spinner"
+              title="Ketik jumlah kuantitas"
+            />
+            <div onClick={handleWrapperPlusClick} className="h-full flex items-center cursor-pointer shrink-0">
               <button
                 type="button"
                 onClick={handleIncrement}
                 disabled={isOutOfStock || quantityInCart >= product.stock}
-                className="w-6 sm:w-7 h-full flex items-center justify-center text-[#444651] hover:bg-slate-100 disabled:opacity-40 disabled:pointer-events-none font-medium transition-colors text-xs"
+                className="w-6 sm:w-7 h-full flex items-center justify-center text-[#444651] hover:bg-slate-100 disabled:opacity-40 disabled:pointer-events-none font-medium transition-colors text-xs shrink-0 select-none"
               >
                 +
               </button>
