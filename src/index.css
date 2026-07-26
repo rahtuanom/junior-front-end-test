@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #FDF2F7;
+  --color-brand-100: #FCE7F1;
+  --color-brand-200: #F9CFE3;
+  --color-brand-300: #F4A7C9;
+  --color-brand-400: #EB72A4;
+  --color-brand-500: #D94380;
+  --color-brand-600: #A1315E;
+  --color-brand-700: #89274E;
+  --color-brand-800: #721E3E;
+  --color-brand-900: #4D1228;
+
+  --color-navy-50: #F0F4FF;
+  --color-navy-100: #E2EAF8;
+  --color-navy-700: #1E293B;
+  --color-navy-800: #111827;
+  --color-navy-900: #0D1C2F;
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'Intel One Mono', monospace;
+}
+
+/* Explicit Centered CSS Keyframe Animations */
+@keyframes slideDownFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  15%, 45%, 75% { transform: translateX(-8px); }
+  30%, 60%, 90% { transform: translateX(8px); }
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-toast-slide {
+  animation: slideDownFromTop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-toast-shake {
+  animation: shakeError 0.4s ease-in-out forwards;
+}
+
+.animate-modal-pop {
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-backdrop {
+  animation: backdropFadeIn 0.2s ease-out forwards;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
