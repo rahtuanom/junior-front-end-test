@@ -101,6 +101,7 @@
 }
 .hide-spinner {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 /* Media Print Rules for Clean PDF Export */
