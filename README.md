@@ -25,7 +25,7 @@
 
 | Platform | Keterangan | URL / Access |
 | :--- | :--- | :--- |
-|  **Figma Design** | View Access (Node 17-254) | [Buka Design Figma](https://www.figma.com/design/XJevbxVpijK5RWFZEzlOVX/Training-Junior-Front-end---I-Gusti-Ngurah-Anom-Hariyadi?node-id=17-254&p=f&m=dev) |
+|  **Figma Design** | View Public Access | [Buka Design Figma](https://www.figma.com/design/XJevbxVpijK5RWFZEzlOVX/Training-Junior-Front-end---I-Gusti-Ngurah-Anom-Hariyadi?node-id=17-254&p=f&m=dev) |
 |  **GitHub Repository** | Public Source Code | [rahtuanom/junior-front-end-test](https://github.com/rahtuanom/junior-front-end-test) |
 |  **Vercel Live Demo** | Production Deployment | [junior-front-end-test.vercel.app](https://anemone-junior-front-end-test.vercel.app/) |
 
