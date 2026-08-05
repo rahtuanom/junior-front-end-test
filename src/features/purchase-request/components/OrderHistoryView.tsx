@@ -32,7 +32,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
       {/* Order Top Bar */}
       <div className="flex items-center justify-between pb-3 border-b border-slate-100 flex-wrap gap-2">
         <div className="flex items-center gap-3">
-          <span className="font-mono font-bold text-sm sm:text-base text-[#0D1C2F]">
+          <span className="font-mono font-bold text-sm sm:text-base text-navy-900">
             {order.orderNumber}
           </span>
           <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
@@ -58,7 +58,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
                 className="w-10 h-10 object-contain bg-white rounded-lg p-1 border border-[#C5C5D3] shrink-0"
               />
               <div>
-                <h4 className="font-semibold text-xs sm:text-sm text-[#0D1C2F]">
+                <h4 className="font-semibold text-xs sm:text-sm text-navy-900">
                   {firstItem.product.name} {order.cart.length > 1 && `+ ${order.cart.length - 1} item lainnya`}
                 </h4>
                 <p className="text-[11px] text-[#757682]">
@@ -70,7 +70,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
             <button
               type="button"
               onClick={() => setIsExpanded(true)}
-              className="flex items-center gap-1 px-3 py-1.5 bg-white border border-[#A1315E] text-[#A1315E] text-xs font-bold rounded-lg hover:bg-[#FDF2F7] transition-colors shrink-0 shadow-2xs"
+              className="flex items-center gap-1 px-3 py-1.5 bg-white border border-brand-600 text-brand-600 text-xs font-bold rounded-lg hover:bg-brand-50 transition-colors shrink-0 shadow-2xs"
             >
               <span>Lihat Detail ({order.cart.length} Item)</span>
               <ChevronDown className="w-3.5 h-3.5" />
@@ -80,14 +80,14 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
           /* Expanded Full Items List */
           <div className="space-y-3">
             <div className="flex items-center justify-between pb-1 border-b border-slate-100">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-[#0D1C2F]">
-                <Package className="w-4 h-4 text-[#A1315E]" />
+              <div className="flex items-center gap-1.5 text-xs font-bold text-navy-900">
+                <Package className="w-4 h-4 text-brand-600" />
                 <span>Rincian Item Pesanan ({order.cart.length} Jenis Barang)</span>
               </div>
               <button
                 type="button"
                 onClick={() => setIsExpanded(false)}
-                className="flex items-center gap-1 text-xs font-semibold text-[#A1315E] hover:underline"
+                className="flex items-center gap-1 text-xs font-semibold text-brand-600 hover:underline"
               >
                 <span>Tutup Rincian</span>
                 <ChevronUp className="w-3.5 h-3.5" />
@@ -101,10 +101,10 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
                     <img
                       src={item.product.image}
                       alt={item.product.name}
-                      className="w-10 h-10 sm:w-12 sm:h-12 object-contain bg-[#EFF4FF] rounded-lg p-1 border border-[#C5C5D3] shrink-0"
+                      className="w-10 h-10 sm:w-12 sm:h-12 object-contain bg-navy-50 rounded-lg p-1 border border-[#C5C5D3] shrink-0"
                     />
                     <div>
-                      <h4 className="font-semibold text-xs sm:text-sm text-[#0D1C2F]">
+                      <h4 className="font-semibold text-xs sm:text-sm text-navy-900">
                         {item.product.name}
                       </h4>
                       <p className="text-[11px] text-[#757682]">
@@ -113,7 +113,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
                     </div>
                   </div>
 
-                  <span className="font-bold text-xs sm:text-sm text-[#0D1C2F] shrink-0">
+                  <span className="font-bold text-xs sm:text-sm text-navy-900 shrink-0">
                     {formatRupiah(item.product.price * item.quantity)}
                   </span>
                 </div>
@@ -124,16 +124,16 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
       </div>
 
       {/* Payment & Logistics Metadata */}
-      <div className="bg-[#EFF4FF] border border-[#DDE9FF] rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+      <div className="bg-navy-50 border border-[#DDE9FF] rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-4 flex-wrap">
-          <div className="flex items-center gap-1.5 text-[#0D1C2F]">
-            <Truck className="w-4 h-4 text-[#A1315E]" />
+          <div className="flex items-center gap-1.5 text-navy-900">
+            <Truck className="w-4 h-4 text-brand-600" />
             <span className="font-medium">Ekspedisi:</span>
             <span className="font-bold">{order.shippingOption.name}</span>
           </div>
 
-          <div className="flex items-center gap-1.5 text-[#0D1C2F]">
-            <CreditCard className="w-4 h-4 text-[#A1315E]" />
+          <div className="flex items-center gap-1.5 text-navy-900">
+            <CreditCard className="w-4 h-4 text-brand-600" />
             <span className="font-medium">Pembayaran:</span>
             <span className="font-bold">{order.paymentMethod.name}</span>
           </div>
@@ -154,7 +154,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
 
         <div className="text-right">
           <span className="text-[10px] text-[#757682] font-semibold block uppercase">Total Dibayar</span>
-          <span className="text-base sm:text-lg font-extrabold text-[#A1315E]">
+          <span className="text-base sm:text-lg font-extrabold text-brand-600">
             {formatRupiah(order.totalAmount)}
           </span>
         </div>
@@ -172,11 +172,11 @@ export const OrderHistoryView: React.FC<OrderHistoryViewProps> = ({
       {/* Page Header */}
       <div className="flex items-center justify-between pb-3 border-b border-[#C5C5D3]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#EFF4FF] text-[#A1315E] flex items-center justify-center font-bold shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-navy-50 text-brand-600 flex items-center justify-center font-bold shrink-0">
             <ClipboardList className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-[#0D1C2F]">Histori Pesanan</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-navy-900">Histori Pesanan</h1>
             <p className="text-xs sm:text-sm text-[#444651] mt-0.5">
               Daftar pengajuan barang yang telah berhasil dikirim ke Head Office pada sesi ini.
             </p>
@@ -188,7 +188,7 @@ export const OrderHistoryView: React.FC<OrderHistoryViewProps> = ({
           size="sm"
           onClick={onGoToKatalog}
           leftIcon={<ShoppingBag className="w-4 h-4" />}
-          className="bg-[#A1315E] hover:bg-[#89274E] text-white hidden sm:flex"
+          className="bg-brand-600 hover:bg-brand-700 text-white hidden sm:flex"
         >
           Permintaan Baru
         </Button>
@@ -213,7 +213,7 @@ export const OrderHistoryView: React.FC<OrderHistoryViewProps> = ({
             size="md"
             onClick={onGoToKatalog}
             rightIcon={<ArrowRight className="w-4 h-4" />}
-            className="bg-[#A1315E] hover:bg-[#89274E] text-white font-semibold text-xs py-2 px-4 rounded-lg shadow-xs mx-auto"
+            className="bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs py-2 px-4 rounded-lg shadow-xs mx-auto"
           >
             Mulai Permintaan Baru
           </Button>

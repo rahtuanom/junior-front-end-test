@@ -83,7 +83,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     id: 'prod-8',
     name: 'Tumbler Anemone Pink',
     price: 75000,
-    stock: 0, // Stok Habis!
+    stock: 100,
     category: 'Aksesoris',
     unit: 'pcs',
     description: 'Botol minum tumbler stainless tahan dingin & panas Anemone Pink.',

@@ -106,11 +106,11 @@ export const SuccessReceipt: React.FC<SuccessReceiptProps> = ({
             </div>
             <div className="flex justify-between text-slate-600 text-xs">
               <span>Metode Pembayaran</span>
-              <span className="font-semibold text-[#A1315E]">{paymentMethod.name}</span>
+              <span className="font-semibold text-brand-600">{paymentMethod.name}</span>
             </div>
             <div className="flex justify-between text-sm sm:text-base font-extrabold text-slate-900 pt-2 border-t border-slate-200">
               <span>Total Biaya</span>
-              <span className="text-[#A1315E]">{formatRupiah(totalAmount)}</span>
+              <span className="text-brand-600">{formatRupiah(totalAmount)}</span>
             </div>
           </div>
         </div>
@@ -130,7 +130,7 @@ export const SuccessReceipt: React.FC<SuccessReceiptProps> = ({
           <Button
             variant="primary"
             size="md"
-            className="flex-1 text-xs bg-[#A1315E] hover:bg-[#89274E]"
+            className="flex-1 text-xs bg-brand-600 hover:bg-brand-700"
             leftIcon={<RefreshCw className="w-4 h-4" />}
             onClick={onNewOrder}
           >

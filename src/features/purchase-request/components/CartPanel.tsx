@@ -1,5 +1,7 @@
 import React from 'react';
 import { ShoppingBag, ArrowLeft } from 'lucide-react';
+import { motion, useMotionValue, useTransform, animate, AnimatePresence } from 'framer-motion';
+import { useDrag } from '@use-gesture/react';
 import { CartItem as CartItemType, StepType } from '@/types';
 import { CartItem } from './CartItem';
 import { OrderSummary } from './OrderSummary';
@@ -25,12 +27,55 @@ export const CartPanel: React.FC<CartPanelProps> = ({
   currentStep,
   onUpdateQuantity,
   onRemoveItem,
+  onClearCart,
   onNextStep,
   onExceedStock,
   isMobileDrawer = false,
   onCloseMobileDrawer,
   isLoading = false
 }) => {
+  const y = useMotionValue(0);
+  const opacity = useTransform(y, [0, 300], [1, 0]);
+
+  const bind = useDrag(
+    ({ movement: [, my], velocity: [, vy], down, cancel }) => {
+      // Only allow dragging downward
+      if (my < 0) {
+        y.set(0);
+        return;
+      }
+
+      if (down) {
+        y.set(my);
+      } else {
+        // Close if swiped down far enough or fast enough
+        if (my > 120 || vy > 0.5) {
+          animate(y, 400, {
+            type: 'spring',
+            stiffness: 300,
+            damping: 30,
+            onComplete: () => {
+              onCloseMobileDrawer?.();
+              y.set(0);
+            },
+          });
+        } else {
+          // Snap back to open position
+          animate(y, 0, {
+            type: 'spring',
+            stiffness: 300,
+            damping: 30,
+          });
+        }
+      }
+    },
+    {
+      axis: 'y',
+      filterTaps: true,
+      rubberband: true,
+    }
+  );
+
   const totalItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   const content = (
@@ -42,29 +87,42 @@ export const CartPanel: React.FC<CartPanelProps> = ({
           <h3 className="font-semibold text-[20px] text-[#0D1C2F]">Keranjang</h3>
         </div>
 
-        <span className="bg-[#A1315E] text-white text-xs font-semibold px-3 py-1 rounded-full">
-          {totalItemCount} Item
-        </span>
+        <div className="flex items-center gap-2">
+          {cart.length > 0 && onClearCart && (
+            <button
+              onClick={onClearCart}
+              className="text-xs text-red-500 hover:text-red-700 hover:underline font-medium"
+              title="Clear all items"
+            >
+              Hapus Semua Produk
+            </button>
+          )}
+          <span className="bg-brand-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+            {totalItemCount} Item
+          </span>
+        </div>
       </div>
 
       {/* Cart Items List with internal scroll */}
       <div className="flex-1 overflow-y-auto pr-1 space-y-2">
-        {cart.length > 0 ? (
-          cart.map((item) => (
-            <CartItem
-              key={item.product.id}
-              item={item}
-              onUpdateQuantity={(qty) => onUpdateQuantity(item.product.id, qty)}
-              onRemove={() => onRemoveItem(item.product.id)}
-              onExceedStock={onExceedStock}
+        <AnimatePresence mode="popLayout">
+          {cart.length > 0 ? (
+            cart.map((item) => (
+              <CartItem
+                key={item.product.id}
+                item={item}
+                onUpdateQuantity={(qty) => onUpdateQuantity(item.product.id, qty)}
+                onRemove={() => onRemoveItem(item.product.id)}
+                onExceedStock={onExceedStock}
+              />
+            ))
+          ) : (
+            <EmptyState
+              title="Keranjang Kosong"
+              description="Pilih item dari katalog produk di sebelah kiri untuk menambah pesanan."
             />
-          ))
-        ) : (
-          <EmptyState
-            title="Keranjang Kosong"
-            description="Pilih item dari katalog produk di sebelah kiri untuk menambah pesanan."
-          />
-        )}
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Order Summary & Submit Button at bottom */}
@@ -83,9 +141,34 @@ export const CartPanel: React.FC<CartPanelProps> = ({
   );
 
   if (isMobileDrawer) {
+    const gestureBind = bind();
+    const gestureHandlers = {
+      onPointerDown: gestureBind.onPointerDown as any,
+      onPointerMove: gestureBind.onPointerMove as any,
+      onPointerUp: gestureBind.onPointerUp as any,
+      onPointerCancel: gestureBind.onPointerCancel as any,
+    };
+
     return (
-      <div className="fixed inset-0 z-50 flex flex-col justify-end bg-slate-900/60 backdrop-blur-xs lg:hidden">
-        <div className="w-full bg-white rounded-t-3xl p-5 max-h-[85vh] flex flex-col shadow-2xl animate-in slide-in-from-bottom duration-300">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex flex-col justify-end bg-slate-900/60 backdrop-blur-xs lg:hidden"
+        onClick={onCloseMobileDrawer}
+      >
+        <motion.div
+          {...gestureHandlers}
+          style={{ y, opacity, touchAction: 'none' }}
+          initial={{ y: '100%' }}
+          animate={{ y: 0 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 250 }}
+          className="w-full bg-white rounded-t-3xl p-5 max-h-[85vh] flex flex-col shadow-2xl cursor-grab active:cursor-grabbing"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Drag Handle Indicator */}
+          <div className="w-12 h-1.5 bg-slate-300 rounded-full mx-auto mb-3" />
+
           <div className="flex items-center justify-between mb-2">
             <button
               onClick={onCloseMobileDrawer}
@@ -96,8 +179,8 @@ export const CartPanel: React.FC<CartPanelProps> = ({
             </button>
           </div>
           {content}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     );
   }
 
@@ -107,3 +190,4 @@ export const CartPanel: React.FC<CartPanelProps> = ({
     </aside>
   );
 };
+

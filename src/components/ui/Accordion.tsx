@@ -21,11 +21,11 @@ export const Accordion: React.FC<AccordionProps> = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-6 py-4 bg-[#EFF4FF] border-b border-[#C5C5D3] text-left transition-colors hover:bg-[#E2EAF8]"
+        className="w-full flex items-center justify-between px-6 py-4 bg-navy-50 border-b border-[#C5C5D3] text-left transition-colors hover:bg-navy-100"
       >
-        <div className="font-semibold text-[20px] text-[#0D1C2F]">{title}</div>
+        <div className="font-semibold text-[20px] text-navy-900">{title}</div>
         <ChevronDown
-          className={`w-5 h-5 text-[#0D1C2F] transition-transform duration-200 ${
+          className={`w-5 h-5 text-navy-900 transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`}
         />

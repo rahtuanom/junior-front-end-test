@@ -1,13 +1,13 @@
 import React from 'react';
-import { 
-  Store, 
-  Plus, 
-  Grid, 
-  ClipboardList, 
-  PackageCheck, 
-  BarChart3, 
-  Settings, 
-  HelpCircle 
+import {
+  Store,
+  Plus,
+  Grid,
+  ClipboardList,
+  PackageCheck,
+  BarChart3,
+  Settings,
+  HelpCircle
 } from 'lucide-react';
 
 export interface SidebarProps {
@@ -34,19 +34,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Outlet Switcher Header Box */}
         <div className="space-y-4">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#EFF4FF] text-[#A1315E] flex items-center justify-center font-bold shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-navy-50 text-brand-600 flex items-center justify-center font-bold shrink-0">
               <Store className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-[20px] font-semibold text-[#0D1C2F] leading-tight">Outlet Utama</h3>
+              <h3 className="text-[20px] font-semibold text-navy-900 leading-tight">Outlet Utama</h3>
               <p className="text-[14px] text-[#444651] mt-0.5">Tampilan Koordinator</p>
             </div>
           </div>
 
-          <button 
+          <button
             type="button"
             onClick={() => onTabSelect && onTabSelect('Katalog')}
-            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-[#A1315E] hover:bg-[#89274E] text-white rounded-lg text-sm font-semibold transition-all shadow-xs"
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-brand-600 hover:bg-brand-700 text-white rounded-lg text-sm font-semibold transition-all shadow-xs"
           >
             <Plus className="w-4 h-4" />
             <span>Permintaan Baru</span>
@@ -63,13 +63,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 key={item.name}
                 type="button"
                 onClick={() => onTabSelect && onTabSelect(item.name)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                  isSelected
-                    ? 'text-[#A1315E] font-semibold bg-[#FDF2F7]'
-                    : 'text-[#0D1C2F] hover:bg-slate-50'
-                }`}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${isSelected
+                  ? 'text-brand-600 font-semibold bg-brand-50'
+                  : 'text-navy-900 hover:bg-slate-50'
+                  }`}
               >
-                <Icon className={`w-5 h-5 ${isSelected ? 'text-[#A1315E]' : 'text-[#757682]'}`} />
+                <Icon className={`w-5 h-5 ${isSelected ? 'text-brand-600' : 'text-[#757682]'}`} />
                 <span>{item.name}</span>
               </button>
             );
@@ -90,9 +89,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <button
           type="button"
           onClick={onOpenHelp}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-[#A1315E] hover:bg-[#FDF2F7] transition-colors"
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-brand-600 hover:bg-brand-50 transition-colors"
         >
-          <HelpCircle className="w-5 h-5 text-[#A1315E]" />
+          <HelpCircle className="w-5 h-5 text-brand-600" />
           <span>Bantuan (Panduan)</span>
         </button>
       </div>

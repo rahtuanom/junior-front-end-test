@@ -1,17 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #FDF2F7;
-  --color-brand-100: #FCE7F1;
-  --color-brand-200: #F9CFE3;
-  --color-brand-300: #F4A7C9;
-  --color-brand-400: #EB72A4;
-  --color-brand-500: #D94380;
-  --color-brand-600: #A1315E;
-  --color-brand-700: #89274E;
-  --color-brand-800: #721E3E;
-  --color-brand-900: #4D1228;
+  /* --- SISTEM WARNA UTAMA BRAND --- */
+  /* Variabel di bawah ini untuk memperbarui tema warna utama aplikasi (Main Color = --color-brand-500 & --color-brand-600) */
+  --color-brand-50: #FFFDF0;
+  --color-brand-100: #FFF9C4;
+  --color-brand-200: #FFF194;
+  --color-brand-300: #FFE464;
+  --color-brand-400: #FDD835;
+  --color-brand-500: #FECB4B;
+  /* Warna Utama (Kuning Brand) */
+  --color-brand-600: #E5B22E;
+  /* Warna Aksesori / Hover Utama */
+  --color-brand-700: #B88B1D;
+  --color-brand-800: #8C6612;
+  --color-brand-900: #61440A;
 
+  /* --- PALET NAVY / GELAP --- */
   --color-navy-50: #F0F4FF;
   --color-navy-100: #E2EAF8;
   --color-navy-700: #1E293B;
@@ -28,6 +33,7 @@
     opacity: 0;
     transform: translateY(-24px) scale(0.95);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -35,19 +41,45 @@
 }
 
 @keyframes shakeError {
-  0%, 100% { transform: translateX(0); }
-  15%, 45%, 75% { transform: translateX(-8px); }
-  30%, 60%, 90% { transform: translateX(8px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  15%,
+  45%,
+  75% {
+    transform: translateX(-8px);
+  }
+
+  30%,
+  60%,
+  90% {
+    transform: translateX(8px);
+  }
 }
 
 @keyframes modalFadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes backdropFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .animate-toast-slide {
@@ -89,6 +121,7 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -99,6 +132,7 @@
   -webkit-appearance: none;
   margin: 0;
 }
+
 .hide-spinner {
   -moz-appearance: textfield;
   appearance: textfield;
@@ -110,6 +144,7 @@
     background: #ffffff !important;
     color: #000000 !important;
   }
+
   .print\:hidden {
     display: none !important;
   }

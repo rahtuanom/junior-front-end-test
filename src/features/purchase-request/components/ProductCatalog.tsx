@@ -48,8 +48,8 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                 onClick={() => setSelectedCategory(category)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
                   isSelected
-                    ? 'bg-[#A1315E] text-white shadow-xs'
-                    : 'bg-white border border-[#C5C5D3] text-[#0D1C2F] hover:bg-slate-50'
+                    ? 'bg-brand-600 text-white shadow-xs'
+                    : 'bg-white border border-[#C5C5D3] text-navy-900 hover:bg-slate-50'
                 }`}
               >
                 {category}
@@ -79,10 +79,10 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center py-12 text-center bg-white rounded-xl border border-[#C5C5D3] p-6">
-          <div className="w-12 h-12 bg-[#EFF4FF] text-[#A1315E] rounded-full flex items-center justify-center mb-2">
+          <div className="w-12 h-12 bg-navy-50 text-brand-600 rounded-full flex items-center justify-center mb-2">
             <SearchX className="w-6 h-6" />
           </div>
-          <h4 className="text-sm font-bold text-[#0D1C2F] mb-1">Produk Tidak Ditemukan</h4>
+          <h4 className="text-sm font-bold text-navy-900 mb-1">Produk Tidak Ditemukan</h4>
           <p className="text-xs text-[#444651] max-w-xs">
             Tidak ada produk yang cocok dengan pencarian &quot;{searchQuery}&quot; atau kategori &quot;{selectedCategory}&quot;.
           </p>

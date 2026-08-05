@@ -35,32 +35,32 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
     : 'Kirim Permintaan';
 
   return (
-    <div className="bg-[#EFF4FF] border border-[#C5C5D3] rounded-xl p-4 space-y-3 shadow-xs">
+    <div className="bg-navy-50 border border-[#C5C5D3] rounded-xl p-4 space-y-3 shadow-xs">
       <div className="space-y-2 text-xs sm:text-sm text-[#444651]">
         <div className="flex items-center justify-between">
           <span>Subtotal Produk</span>
-          <span className="font-semibold text-[#0D1C2F]">
+          <span className="font-semibold text-navy-900">
             {isCalculating ? '...' : `Rp ${subtotal.toLocaleString('id-ID')}`}
           </span>
         </div>
 
         <div className="flex items-center justify-between">
           <span>Estimasi Pajak (11%)</span>
-          <span className="font-semibold text-[#0D1C2F]">
+          <span className="font-semibold text-navy-900">
             {isCalculating ? '...' : `Rp ${taxAmount.toLocaleString('id-ID')}`}
           </span>
         </div>
 
         <div className="flex items-center justify-between">
           <span>Biaya Ekspedisi / Ongkir</span>
-          <span className="font-semibold text-[#0D1C2F]">
+          <span className="font-semibold text-navy-900">
             {isCalculating ? '...' : shippingCost === 0 ? 'Gratis' : `Rp ${shippingCost.toLocaleString('id-ID')}`}
           </span>
         </div>
 
         <div className="pt-2 border-t border-[#DDE9FF] flex items-center justify-between">
-          <span className="font-bold text-base sm:text-[18px] text-[#0D1C2F]">Total Biaya</span>
-          <span className="font-bold text-base sm:text-[18px] text-[#A1315E]">
+          <span className="font-bold text-base sm:text-[18px] text-navy-900">Total Biaya</span>
+          <span className="font-bold text-base sm:text-[18px] text-brand-600">
             {isCalculating ? '...' : `Rp ${totalAmount.toLocaleString('id-ID')}`}
           </span>
         </div>
@@ -73,7 +73,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
         isLoading={isLoading}
         disabled={disabled || subtotal <= 0 || isCalculating}
         rightIcon={!isLoading && !isCalculating && <ArrowRight className="w-4 h-4" />}
-        className="w-full bg-[#A1315E] hover:bg-[#89274E] text-white font-semibold text-sm py-2.5 rounded-lg shadow-xs transition-all disabled:opacity-50"
+        className="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm py-2.5 rounded-lg shadow-xs transition-all disabled:opacity-50"
       >
         {isCalculating ? (
           <span className="inline-flex items-center gap-1.5">

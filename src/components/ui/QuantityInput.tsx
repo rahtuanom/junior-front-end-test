@@ -82,7 +82,7 @@ export const QuantityInput: React.FC<QuantityInputProps> = ({
         disabled={disabled || max <= 0}
         min={min}
         max={max}
-        className={`${textSize} text-center bg-transparent font-semibold text-[#0D1C2F] focus:outline-none focus:ring-1 focus:ring-[#A1315E]`}
+        className={`${textSize} text-center bg-transparent font-semibold text-navy-900 focus:outline-none focus:ring-1 focus:ring-brand-600`}
       />
 
       <div onClick={handleWrapperPlusClick} className="h-full inline-flex items-center cursor-pointer">

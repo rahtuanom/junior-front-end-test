@@ -23,7 +23,7 @@ export const Header: React.FC<HeaderProps> = ({
   isResettingSession = false
 }) => {
   return (
-    <header className="sticky top-0 z-30 bg-[#EFF4FF] border-b border-[#C5C5D3] shadow-xs select-none">
+    <header className="sticky top-0 z-30 bg-navy-50 border-b border-[#C5C5D3] shadow-xs select-none">
       <div className="max-w-[1440px] mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-4">
         {/* Brand Logo */}
         <div className="flex items-center gap-2 shrink-0">
@@ -48,7 +48,7 @@ export const Header: React.FC<HeaderProps> = ({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             leftIcon={<Search className="w-4 h-4 text-[#757682]" />}
-            className="border-[#C5C5D3] bg-white rounded-lg focus:border-[#A1315E]"
+            className="border-[#C5C5D3] bg-white rounded-lg focus:border-brand-600"
           />
         </div>
 
@@ -69,19 +69,19 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             onClick={onResetSession}
             disabled={isResettingSession}
-            className="flex items-center gap-1 px-2 sm:px-3 py-1.5 bg-white border border-[#C5C5D3] hover:border-[#A1315E] hover:text-[#A1315E] text-[#0D1C2F] text-[11px] sm:text-xs font-semibold rounded-lg transition-all shadow-2xs disabled:opacity-60 shrink-0 h-8"
+            className="flex items-center gap-1 px-2 sm:px-3 py-1.5 bg-white border border-[#C5C5D3] hover:border-brand-600 hover:text-brand-600 text-navy-900 text-[11px] sm:text-xs font-semibold rounded-lg transition-all shadow-2xs disabled:opacity-60 shrink-0 h-8"
             title="Reset stok dan sesi (Dev Button)"
           >
             {isResettingSession ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin text-[#A1315E]" />
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-brand-600" />
             ) : (
-              <RefreshCw className="w-3.5 h-3.5 text-[#A1315E]" />
+              <RefreshCw className="w-3.5 h-3.5 text-brand-600" />
             )}
             <span className="hidden sm:inline">Reset Sesi</span>
           </button>
 
           {/* Cart Icon Mobile Button */}
-          <button
+          {/* <button
             type="button"
             onClick={onOpenCartMobile}
             className="relative lg:hidden p-1.5 text-[#0D1C2F] hover:bg-white/60 rounded-lg transition-colors shrink-0"
@@ -94,13 +94,13 @@ export const Header: React.FC<HeaderProps> = ({
                 {cartItemCount}
               </span>
             )}
-          </button>
+          </button> */}
 
           {/* Cart Icon (Desktop) */}
           <button
             type="button"
             onClick={onOpenCartMobile}
-            className="relative p-2 text-[#0D1C2F] hover:bg-white/60 rounded-lg transition-colors hidden lg:flex"
+            className="relative p-2 text-navy-900 hover:bg-white/60 rounded-lg transition-colors hidden lg:flex"
             title="Keranjang"
           >
             <ShoppingBag className="w-5 h-5" />
@@ -109,7 +109,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Notifications */}
           <button
             type="button"
-            className="p-2 text-[#0D1C2F] hover:bg-white/60 rounded-lg transition-colors hidden sm:flex"
+            className="p-2 text-navy-900 hover:bg-white/60 rounded-lg transition-colors hidden sm:flex"
             title="Notifikasi"
           >
             <Bell className="w-5 h-5" />

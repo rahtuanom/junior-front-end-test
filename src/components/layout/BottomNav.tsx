@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Grid, ShoppingBag, ClipboardList } from 'lucide-react';
 
 export interface BottomNavProps {
@@ -22,40 +23,48 @@ export const BottomNav: React.FC<BottomNavProps> = ({
       <button
         type="button"
         onClick={onGoToKatalog}
-        className={`flex flex-col items-center gap-1 p-1 transition-colors ${
-          activeTab === 'katalog' ? 'text-[#A1315E] font-bold' : 'text-[#757682] font-medium'
-        }`}
+        className={`flex flex-col items-center gap-1 p-1 transition-colors ${activeTab === 'katalog' ? 'text-brand-600 font-bold' : 'text-[#757682] font-medium'
+          }`}
       >
         <Grid className="w-5 h-5" />
         <span className="text-[11px]">Katalog</span>
       </button>
 
-      {/* Keranjang Button -> Triggers Mobile Cart Drawer */}
-      <button
+      {/* Floating Action Button (FAB) Keranjang di Sudut Kanan Bawah */}
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        animate={cartItemCount > 0 ? { scale: [1, 1.08, 1] } : {}}
+        transition={{ duration: 0.3 }}
         type="button"
         onClick={onOpenCartMobile}
-        className={`relative flex flex-col items-center gap-1 p-1 transition-colors ${
-          activeTab === 'keranjang' ? 'text-[#A1315E] font-bold' : 'text-[#757682] font-medium'
-        }`}
+        className="fixed bottom-20 right-4 z-40 bg-brand-600 hover:bg-brand-700 text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center lg:hidden border-2 border-white"
+        title="Buka Keranjang"
+        aria-label="Keranjang Belanja"
       >
-        <div className="relative">
-          <ShoppingBag className="w-5 h-5" />
+        <ShoppingBag className="w-6 h-6" />
+        <AnimatePresence>
           {cartItemCount > 0 && (
-            <span className="absolute -top-1.5 -right-2 bg-[#A1315E] text-white text-[9px] font-extrabold px-1.5 py-0.2 rounded-full border border-white">
+            <motion.span
+              key={cartItemCount}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+              className="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm"
+            >
               {cartItemCount}
-            </span>
+            </motion.span>
           )}
-        </div>
-        <span className="text-[11px]">Keranjang</span>
-      </button>
+        </AnimatePresence>
+      </motion.button>
 
       {/* Pesanan Button -> Navigates to Order History */}
       <button
         type="button"
         onClick={onGoToPesanan || onGoToKatalog}
-        className={`flex flex-col items-center gap-1 p-1 transition-colors ${
-          activeTab === 'pesanan' ? 'text-[#A1315E] font-bold' : 'text-[#757682] font-medium'
-        }`}
+        className={`flex flex-col items-center gap-1 p-1 transition-colors ${activeTab === 'pesanan' ? 'text-brand-600 font-bold' : 'text-[#757682] font-medium'
+          }`}
       >
         <ClipboardList className="w-5 h-5" />
         <span className="text-[11px]">Pesanan</span>

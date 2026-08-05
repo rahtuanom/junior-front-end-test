@@ -380,7 +380,7 @@ export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
           {/* Header & Back Button */}
           <div className="flex items-center justify-between pb-2 border-b border-[#C5C5D3]">
             <div>
-              <h1 className="text-xl sm:text-[32px] font-bold text-[#0D1C2F]">Pembayaran</h1>
+              <h1 className="text-xl sm:text-[32px] font-bold text-navy-900">Pembayaran</h1>
               <p className="text-xs sm:text-sm text-[#444651] mt-0.5">Tinjau permintaan, pilih ekspedisi & pembayaran.</p>
             </div>
 
@@ -390,7 +390,7 @@ export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
               onClick={handleGoToStep1}
               isLoading={isNavigating}
               leftIcon={<ArrowLeft className="w-3.5 h-3.5" />}
-              className="text-[#A1315E] border-[#A1315E] hover:bg-[#FDF2F7]"
+              className="text-brand-600 border-brand-600 hover:bg-brand-50"
             >
               Kembali ke Keranjang
             </Button>
@@ -403,8 +403,8 @@ export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
             {/* Left 2 Columns: Detail Pesanan (Unclipped Flexible Container) */}
             <div className="lg:col-span-2 space-y-6">
               <div className="bg-white border border-[#C5C5D3] rounded-xl overflow-hidden shadow-xs">
-                <div className="bg-[#EFF4FF] border-b border-[#C5C5D3] px-4 sm:px-6 py-3.5 flex items-center justify-between">
-                  <h2 className="text-base sm:text-[20px] font-semibold text-[#0D1C2F]">Detail Pesanan</h2>
+                <div className="bg-navy-50 border-b border-[#C5C5D3] px-4 sm:px-6 py-3.5 flex items-center justify-between">
+                  <h2 className="text-base sm:text-[20px] font-semibold text-navy-900">Detail Pesanan</h2>
                   <span className="text-xs font-semibold text-[#757682] bg-white px-2.5 py-0.5 rounded-full border border-[#C5C5D3]">
                     {cart.length} Jenis Item
                   </span>
@@ -418,10 +418,10 @@ export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
                         <img
                           src={item.product.image}
                           alt={item.product.name}
-                          className="w-12 h-12 sm:w-16 sm:h-16 object-contain bg-[#EFF4FF] rounded-lg p-1.5 border border-[#C5C5D3] shrink-0"
+                          className="w-12 h-12 sm:w-16 sm:h-16 object-contain bg-navy-50 rounded-lg p-1.5 border border-[#C5C5D3] shrink-0"
                         />
                         <div>
-                          <h4 className="font-semibold text-xs sm:text-base text-[#0D1C2F] leading-snug">
+                          <h4 className="font-semibold text-xs sm:text-base text-navy-900 leading-snug">
                             {item.product.name}
                           </h4>
                           <p className="text-[11px] sm:text-xs text-[#757682] mt-0.5">
@@ -431,7 +431,7 @@ export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
                       </div>
                       <div className="text-right shrink-0">
                         <span className="text-[10px] sm:text-xs text-[#757682] block">Total Item</span>
-                        <span className="font-bold text-xs sm:text-base text-[#0D1C2F]">
+                        <span className="font-bold text-xs sm:text-base text-navy-900">
                           Rp {(item.product.price * item.quantity).toLocaleString('id-ID')}
                         </span>
                       </div>
@@ -505,26 +505,6 @@ export const PurchaseRequestPage: React.FC<PurchaseRequestPageProps> = ({
         />
       )}
 
-      {/* MOBILE STICKY ACTION BAR */}
-      {currentStep === 1 && cart.length > 0 && (
-        <div className="fixed bottom-14 left-0 right-0 z-30 bg-white border-t border-[#C5C5D3] p-3 flex items-center justify-between lg:hidden shadow-lg">
-          <div>
-            <p className="text-[10px] text-[#757682] font-semibold uppercase">Total ({cart.reduce((s, i) => s + i.quantity, 0)} item)</p>
-            <p className="text-sm font-bold text-[#A1315E]">
-              Rp {Math.round(subtotal * 1.11 + shippingCost).toLocaleString('id-ID')}
-            </p>
-          </div>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={handleOpenMobileCartView}
-            leftIcon={<ShoppingBag className="w-4 h-4" />}
-            className="bg-[#A1315E] hover:bg-[#89274E] text-white"
-          >
-            Lihat Keranjang
-          </Button>
-        </div>
-      )}
 
       {/* SUCCESS RECEIPT MODAL */}
       <SuccessReceipt
